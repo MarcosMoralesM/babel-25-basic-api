@@ -3,15 +3,19 @@ package com.helloworld.babel.restaurant.model;
 import com.helloworld.babel.restaurant.daos.model.Restaurante;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "Modelo de local")
 public class Local {
 
 	@Schema(description = "CIF del local")
 	private String cif;
 	@Schema(description = "Nombre del local")
+	@Size(max = 50, message = "Nombre muy largo")
 	private String nombre;
 	@Schema(description = "Dirección del local")
 	private String direccion;

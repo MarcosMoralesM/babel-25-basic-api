@@ -3,10 +3,10 @@ package com.helloworld.babel.restaurant.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.*;
 
+@Tag(name = "Modelo de plato")
 public class Plato {
 
 	@Schema(description = "Enumerado con la categoría del plato")
@@ -38,19 +38,19 @@ public class Plato {
 
 	}
 
-	@Min(value = 0, message = "El ID ha de ser mayor o igual que 0")
-	@Schema(description = "ID del plato")
+	@PositiveOrZero(message = "El ID del plato ha de ser positivo")
+	@Schema(description = "ID del plato", example = "1")
 	private Integer id;
 
-	@Schema(description = "Nombre del plato")
+	@Schema(description = "Nombre del plato", example = "Pollo empanado")
 	private String nombre;
 
-	@Min(value = 0, message = "El precio ha de ser mayor o igual que 0")
-	@Schema(description = "Precio del plato")
+	@PositiveOrZero(message = "El precio del plato ha de ser positivo")
+	@Schema(description = "Precio del plato", example = "7.99")
 	private double precio;
 
 	@NotNull(message = "La categoría no puede ser nula")
-	@Schema(description = "Categoría del plato")
+	@Schema(description = "Categoría del plato", example = "Entrante")
 	private Categoria categoria;
 
 	public Plato(Integer id, String nombre, double precio, Categoria categoria) {

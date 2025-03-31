@@ -7,6 +7,7 @@ import com.helloworld.babel.restaurant.servicios.locales.LocalesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "Controlador de locales")
 @RequestMapping("restaurante/locales")
 public class LocalesControllerImpl implements LocalesController {
 
