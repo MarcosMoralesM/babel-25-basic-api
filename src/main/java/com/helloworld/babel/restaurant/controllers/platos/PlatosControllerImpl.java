@@ -3,6 +3,7 @@ package com.helloworld.babel.restaurant.controllers.platos;
 import com.helloworld.babel.restaurant.model.Plato;
 import com.helloworld.babel.restaurant.servicios.platos.PlatosService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,9 @@ public class PlatosControllerImpl implements PlatosController {
 	@Override
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener plato a partir del ID")
-	public Plato getPlatosById(@PathVariable String id) {
+	public Plato getPlatosById(@Parameter(description = "ID del plato a obtener por parametro", required = true)
+								@PathVariable String id)
+	{
 		Optional<Plato> plato = platosService.getPlatosById(Integer.parseInt(id));
 		if (plato.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plato no encontrado");
@@ -49,7 +52,11 @@ public class PlatosControllerImpl implements PlatosController {
 	@Override
 	@PutMapping("/{id}")
 	@Operation(summary = "Actualizar plato")
-	public ResponseEntity<Void> updatePlato(@PathVariable int id, @RequestBody Plato plato) {
+	public ResponseEntity<Void> updatePlato(@Parameter(description = "ID del plato a actualizar por parametro", required = true)
+											@PathVariable int id,
+											@Parameter(description = "Plato para actualizar por parametro", required = true)
+											@RequestBody Plato plato)
+	{
 		plato.setId(id);
 		Optional<Plato> updatedPlato = platosService.updatePlato(plato);
 		if (updatedPlato.isEmpty()) {
@@ -65,7 +72,9 @@ public class PlatosControllerImpl implements PlatosController {
 	@Override
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Borrar plato")
-	public ResponseEntity<Void> deletePlato(@PathVariable int id) {
+	public ResponseEntity<Void> deletePlato(@Parameter(description = "ID del plato a borrar por parametro", required = true)
+											@PathVariable int id)
+	{
 		platosService.deletePlato(id);
 		return ResponseEntity.noContent().build();
 	}
@@ -73,7 +82,9 @@ public class PlatosControllerImpl implements PlatosController {
 	@Override
 	@PostMapping("")
 	@Operation(summary = "Crear plato")
-	public ResponseEntity<Long> createPlato(@RequestBody Plato plato) {
+	public ResponseEntity<Long> createPlato(@Parameter(description = "ID del plato a crear por parametro", required = true)
+											@RequestBody Plato plato)
+	{
 		long platoCreadoId = platosService.createPlato(plato);
 		return ResponseEntity.
 				created(URI.create("/restaurante/platos/" + platoCreadoId)).

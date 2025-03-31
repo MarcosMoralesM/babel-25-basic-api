@@ -5,6 +5,7 @@ import com.helloworld.babel.restaurant.model.Local;
 import com.helloworld.babel.restaurant.model.Plato;
 import com.helloworld.babel.restaurant.servicios.locales.LocalesService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@GetMapping("")
-	@Operation(summary = "Obtener lista de locales")
+	@Operation(summary = "Obtener locales", description = "Obtener lista de locales")
 	public List<Local> getLocales() {
 		return localesService.getLocales();
 	}
@@ -37,7 +38,9 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@GetMapping("/{cif}")
 	@Operation(summary = "Obtener local a partir de CIF")
-	public Local getLocalByCif(@PathVariable String cif) {
+	public Local getLocalByCif(@Parameter(description = "CIF del local por parametro", required = true)
+								   @PathVariable String cif)
+	{
 		Optional<Local> local = localesService.getLocalByCif(cif);
 		if (local.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Local no encontrado");
@@ -49,7 +52,11 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@PutMapping("/{cif}")
 	@Operation(summary = "Crear o actualizar local")
-	public ResponseEntity<Void> createOrUpdateLocal(@PathVariable String cif, @RequestBody Local local) {
+	public ResponseEntity<Void> createOrUpdateLocal(@Parameter(description = "CIF del local por parametro", required = true)
+													@PathVariable String cif,
+													@Parameter(description = "Local a crear o actualizar por parametro", required = true)
+													@RequestBody Local local)
+	{
 		local.setCif(cif);
 		Optional<Local> updatedLocal = localesService.updateLocal(local);
 		if (updatedLocal.isEmpty()) {
@@ -68,7 +75,9 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@DeleteMapping("/{cif}")
 	@Operation(summary = "Borrar local")
-	public ResponseEntity<Void> deleteLocal(@PathVariable String cif) {
+	public ResponseEntity<Void> deleteLocal(@Parameter(description = "CIF del local por parametro", required = true)
+											@PathVariable String cif)
+	{
 		localesService.deleteLocal(cif);
 		return ResponseEntity.noContent().build();
 	}
@@ -76,7 +85,9 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@GetMapping("/{cif}/platos")
 	@Operation(summary = "Obtener lista del menu platos del local")
-	public List<Plato> getPlatos(@PathVariable String cif) {
+	public List<Plato> getPlatos(@Parameter(description = "CIF del local por parametro", required = true)
+									 @PathVariable String cif)
+	{
 		try {
 			return localesService.getPlatosByLocal(cif);
 		}catch (NotFoundException e) {
@@ -87,7 +98,11 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@PostMapping("/{cif}/platos")
 	@Operation(summary = "Añadir plato al menu del local")
-	public ResponseEntity<Void> addPlato(@PathVariable String cif, @RequestBody int plato) {
+	public ResponseEntity<Void> addPlato(@Parameter(description = "CIF del local por parametro", required = true)
+										@PathVariable String cif,
+										@Parameter(description = "Plato a añadir al menú por parametro", required = true)
+										@RequestBody int plato)
+	{
 		try {
 			if (localesService.addPlato(cif, plato)>0) {
 				return ResponseEntity
@@ -108,7 +123,11 @@ public class LocalesControllerImpl implements LocalesController {
 	@Override
 	@DeleteMapping("/{cif}/platos/{plato}")
 	@Operation(summary = "Borrar plato del menu del local")
-	public ResponseEntity<Void> removePlato(@PathVariable String cif, @PathVariable int plato) {
+	public ResponseEntity<Void> removePlato(@Parameter(description = "CIF del local por parametro", required = true)
+											@PathVariable String cif,
+											@Parameter(description = "Plato a borrar del menú por parametro", required = true)
+											@PathVariable int plato)
+	{
 		try {
 			localesService.removePlato(cif, plato);
 		}catch (NotFoundException e) {
