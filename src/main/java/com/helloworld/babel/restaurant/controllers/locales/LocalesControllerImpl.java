@@ -4,6 +4,8 @@ import com.helloworld.babel.restaurant.servicios.exceptions.NotFoundException;
 import com.helloworld.babel.restaurant.model.Local;
 import com.helloworld.babel.restaurant.model.Plato;
 import com.helloworld.babel.restaurant.servicios.locales.LocalesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("restaurante/locales")
 public class LocalesControllerImpl implements LocalesController {
 
+	@Schema(description = "Servicio de locales")
 	private final LocalesService localesService;
 
 	public LocalesControllerImpl(LocalesService localesService) {
@@ -26,12 +29,14 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@GetMapping("")
+	@Operation(summary = "Obtener lista de locales")
 	public List<Local> getLocales() {
 		return localesService.getLocales();
 	}
 
 	@Override
 	@GetMapping("/{cif}")
+	@Operation(summary = "Obtener local a partir de CIF")
 	public Local getLocalByCif(@PathVariable String cif) {
 		Optional<Local> local = localesService.getLocalByCif(cif);
 		if (local.isEmpty()) {
@@ -43,6 +48,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@PutMapping("/{cif}")
+	@Operation(summary = "Crear o actualizar local")
 	public ResponseEntity<Void> createOrUpdateLocal(@PathVariable String cif, @RequestBody Local local) {
 		local.setCif(cif);
 		Optional<Local> updatedLocal = localesService.updateLocal(local);
@@ -61,6 +67,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@DeleteMapping("/{cif}")
+	@Operation(summary = "Borrar local")
 	public ResponseEntity<Void> deleteLocal(@PathVariable String cif) {
 		localesService.deleteLocal(cif);
 		return ResponseEntity.noContent().build();
@@ -68,6 +75,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@GetMapping("/{cif}/platos")
+	@Operation(summary = "Obtener lista del menu platos del local")
 	public List<Plato> getPlatos(@PathVariable String cif) {
 		try {
 			return localesService.getPlatosByLocal(cif);
@@ -78,6 +86,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@PostMapping("/{cif}/platos")
+	@Operation(summary = "Añadir plato al menu del local")
 	public ResponseEntity<Void> addPlato(@PathVariable String cif, @RequestBody int plato) {
 		try {
 			if (localesService.addPlato(cif, plato)>0) {
@@ -98,6 +107,7 @@ public class LocalesControllerImpl implements LocalesController {
 
 	@Override
 	@DeleteMapping("/{cif}/platos/{plato}")
+	@Operation(summary = "Borrar plato del menu del local")
 	public ResponseEntity<Void> removePlato(@PathVariable String cif, @PathVariable int plato) {
 		try {
 			localesService.removePlato(cif, plato);

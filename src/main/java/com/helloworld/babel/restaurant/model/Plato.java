@@ -2,9 +2,11 @@ package com.helloworld.babel.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class Plato {
 
+	@Schema(description = "Enumerado con la categoría del plato")
 	public enum Categoria {
 		PRIMER_PLATO ("Entrante"),
 		SEGUNDO_PLATO ("Plato principal"),
@@ -33,9 +35,13 @@ public class Plato {
 
 	}
 
+	@Schema(description = "ID del plato")
 	private Integer id;
+	@Schema(description = "Nombre del plato")
 	private String nombre;
+	@Schema(description = "Precio del plato")
 	private double precio;
+	@Schema(description = "Categoría del plato")
 	private Categoria categoria;
 
 	public Plato(Integer id, String nombre, double precio, Categoria categoria) {

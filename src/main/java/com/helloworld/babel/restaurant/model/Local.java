@@ -1,15 +1,23 @@
 package com.helloworld.babel.restaurant.model;
 
 import com.helloworld.babel.restaurant.daos.model.Restaurante;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Local {
+
+	@Schema(description = "CIF del local")
 	private String cif;
+	@Schema(description = "Nombre del local")
 	private String nombre;
+	@Schema(description = "Dirección del local")
 	private String direccion;
+	@Schema(description = "Teléfono del local")
 	private String telefono;
+	@Schema(description = "Lista de cartas del local")
 	private List<Plato> carta = new ArrayList<>();
 
 	public Local(String cif, String nombre, String direccion, String telefono) {

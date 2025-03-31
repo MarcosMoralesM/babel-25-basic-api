@@ -2,6 +2,8 @@ package com.helloworld.babel.restaurant.controllers.platos;
 
 import com.helloworld.babel.restaurant.model.Plato;
 import com.helloworld.babel.restaurant.servicios.platos.PlatosService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("restaurante/platos")
 public class PlatosControllerImpl implements PlatosController {
 
+	@Schema(description = "Servicio de platos")
 	private final PlatosService platosService;
 
 	public PlatosControllerImpl(PlatosService platosService) {
@@ -24,6 +27,7 @@ public class PlatosControllerImpl implements PlatosController {
 
 	@Override
 	@GetMapping("")
+	@Operation(summary = "Obtener lista de platos")
 	public List<Plato> getPlatos() {
 		List<Plato> platos = platosService.getPlatos();
 		return platos;
@@ -32,6 +36,7 @@ public class PlatosControllerImpl implements PlatosController {
 
 	@Override
 	@GetMapping("/{id}")
+	@Operation(summary = "Obtener plato a partir del ID")
 	public Plato getPlatosById(@PathVariable String id) {
 		Optional<Plato> plato = platosService.getPlatosById(Integer.parseInt(id));
 		if (plato.isEmpty()) {
@@ -43,6 +48,7 @@ public class PlatosControllerImpl implements PlatosController {
 
 	@Override
 	@PutMapping("/{id}")
+	@Operation(summary = "Actualizar plato")
 	public ResponseEntity<Void> updatePlato(@PathVariable int id, @RequestBody Plato plato) {
 		plato.setId(id);
 		Optional<Plato> updatedPlato = platosService.updatePlato(plato);
@@ -58,6 +64,7 @@ public class PlatosControllerImpl implements PlatosController {
 
 	@Override
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Borrar plato")
 	public ResponseEntity<Void> deletePlato(@PathVariable int id) {
 		platosService.deletePlato(id);
 		return ResponseEntity.noContent().build();
@@ -65,6 +72,7 @@ public class PlatosControllerImpl implements PlatosController {
 
 	@Override
 	@PostMapping("")
+	@Operation(summary = "Crear plato")
 	public ResponseEntity<Long> createPlato(@RequestBody Plato plato) {
 		long platoCreadoId = platosService.createPlato(plato);
 		return ResponseEntity.
